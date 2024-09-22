@@ -17,4 +17,7 @@ Feature: Eliminación de usuario
     And debería ver un mensaje de error: "usuario no encontrado"
 
   Scenario: Intentar eliminar un usuario sin permisos suficientes
-    Given
+    Given que soy un usuario sin privilegios de administrador
+    When envío una solicitud para eliminar el usuario con login dado
+    Then la respuesta debe ser "solicitud rechazada"
+    And debería ver un mensaje de error "No autorizado"
