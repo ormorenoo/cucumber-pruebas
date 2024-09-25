@@ -7,6 +7,10 @@
   <version>1.0-SNAPSHOT</version>
   <name>cucumber-pruebas</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <java.version>11</java.version> <!-- Versión de Java -->
+    <spring-boot.version>2.5.4</spring-boot.version> <!-- Versión de Spring Boot -->
+  </properties>
   <dependencies>
    <!-- Cucumber Dependencies -->
     <dependency>
@@ -80,12 +84,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://repo1.maven.org/maven2/</url>
-    </repository>
-  </repositories>
-
 </project>
