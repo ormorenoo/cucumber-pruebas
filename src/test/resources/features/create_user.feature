@@ -23,4 +23,4 @@ Feature: Creación de usuario sin autenticación
     When envío una solicitud para crear un usuario
     Then la respuesta debe ser "solicitud rechazada"
     And debería ver un mensaje de error "El nombre de usuario ya está en uso"
-    
+
