@@ -39,7 +39,7 @@ public class LoginSteps {
 
     @Then("la respuesta debe ser: {string}")
     public void la_respuesta_debe_ser(String mensajeEsperado) {
-        // Verifica que el status sea 200 y el mensaje de respuesta sea correcto
+
         if (response.getStatusCode() == 200) {
             assertEquals("sesión iniciada correctamente", mensajeEsperado);
         }
