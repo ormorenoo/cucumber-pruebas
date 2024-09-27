@@ -6,9 +6,6 @@ import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

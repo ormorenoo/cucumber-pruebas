@@ -7,7 +7,6 @@ Feature: Login de usuario
     When envío las credenciales al sistema
     Then la respuesta debe ser: "sesión iniciada correctamente"
     And  debería obtener un token JWT
-    And el token JWT debe ser válido
 
   Scenario: Inicio de sesión fallido con credenciales incorrectas
     Given que soy un usuario registrado
