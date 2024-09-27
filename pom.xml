@@ -12,6 +12,11 @@
     <spring-boot.version>2.5.4</spring-boot.version> <!-- Versión de Spring Boot -->
   </properties>
   <dependencies>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jdk8</artifactId>
+          <version>2.13.2</version> <!-- Usa la versión de Jackson que estés utilizando -->
+      </dependency>
    <!-- Cucumber Dependencies -->
     <dependency>
       <groupId>io.cucumber</groupId>

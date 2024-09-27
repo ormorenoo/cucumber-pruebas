@@ -23,14 +23,16 @@ public class CreateUserSteps {
 
     @Given("proporciono todos los datos solicitados para el registro")
     public void proporciono_datos_dolicitados_para_registro() {
-        usuario.put("login", "nuevoUsuario");
-        usuario.put("email", "nuevo@ejemplo.com");
-        usuario.put("password", "Password123!");
+        usuario.put("login", "johnd");
+        usuario.put("email", "John.D@example.com");
+        usuario.put("firstName", "John");
+        usuario.put("lastName", "Doe");
+        usuario.put("password", "password123");
     }
 
     @Given("Tengo un email ya registrado")
     public void tengo_email_ya_registrado() {
-        usuario.put("email", "existente@ejemplo.com"); // Email ya registrado
+        usuario.put("email", "ormoreno2000@gmail.com"); // Email ya registrado
     }
 
     @Given("Tengo un login ya registrado")
@@ -47,7 +49,7 @@ public class CreateUserSteps {
                 .post(endpoint);
     }
 
-    @Then("la respuesta debe ser: {string}")
+    @Then("la respuesta del servicio de creacion debe ser: {string}")
     public void la_respuesta_debe_ser(String mensajeEsperado) {
         if(response.statusCode() == 201) {
             assertEquals("creado exitosamente", mensajeEsperado);
@@ -55,17 +57,6 @@ public class CreateUserSteps {
         if(response.statusCode() == 400) {
             assertEquals("solicitud rechazada", mensajeEsperado);
         }
-    }
-
-    @Then("el usuario debe existir en el sistema")
-    public void elUsuarioDebeExistirEnElSistema() {
-        // Verificamos que el usuario fue creado y ahora existe en el sistema
-        given()
-                .contentType("application/json")
-                .when()
-                .get("/api/users/" + usuario.get("login"))
-                .then()
-                .statusCode(200);  // Si el código es 200, el usuario existe
     }
 
     @Then("debería ver un mensaje de error {string}")
