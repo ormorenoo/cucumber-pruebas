@@ -30,7 +30,7 @@
       <scope>test</scope>
     </dependency>
 
-      <!-- Rest-Assured Dependencies -->
+    <!-- Rest-Assured Dependencies -->
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
@@ -48,6 +48,7 @@
       <version>4.4.0</version>
       <scope>test</scope>
     </dependency>
+
 
     <!-- JSON Processing -->
     <dependency>
