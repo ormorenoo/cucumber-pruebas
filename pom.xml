@@ -30,7 +30,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Rest-Assured Dependencies -->
+      <!-- Rest-Assured Dependencies -->
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
@@ -40,6 +40,13 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>json-path</artifactId>
       <version>4.4.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>4.4.0</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- JSON Processing -->

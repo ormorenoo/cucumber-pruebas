@@ -7,8 +7,8 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 
 
-
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.Assert.assertEquals;
 
 
@@ -35,6 +35,9 @@ public class LoginSteps {
                 .contentType("application/json")
                 .body("{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}")
                 .post(endpoint);
+        
+        // Validación del JSON Schema
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schemas/login_schema.json"));
     }
 
     @Then("la respuesta debe ser: {string}")
