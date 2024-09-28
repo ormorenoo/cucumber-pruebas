@@ -8,6 +8,7 @@ import org.junit.Assert;
 
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -55,6 +56,9 @@ public class UpdateSteps {
                 .header("Authorization", "Bearer " + authToken)
                 .body(nuevosDatos)
                 .put(endpoint);
+        // Validación del JSON Schema
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schemas/update_schema.json"));
+
     }
 
 
