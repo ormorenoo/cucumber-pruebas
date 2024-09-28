@@ -8,6 +8,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -46,6 +47,9 @@ public class GetByLoginSteps {
                 .header("Authorization", "Bearer " + adminToken)
                 .contentType("application/json")
                 .get(endpoint + loginUsuario);
+        // Validación del JSON Schema
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schemas/get_by_login_schema.json"));
+
     }
 
 
