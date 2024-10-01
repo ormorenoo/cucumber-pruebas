@@ -1,5 +1,6 @@
 package stepDefinitions;
 
+import context.AuthContextSingleton;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -17,39 +18,20 @@ public class UpdateSteps {
     private Response response;
     private String endpoint = "http://localhost:8080/api/admin/users";
     private String authToken;
-    private int usuarioId = 1203;
+    private int usuarioId = 1152;
     private String nuevosDatos;
     private String username;
     private String password;
-    private String email= "otroemail@example";
-
-
-    // Escenario 1 -- Actualizacion exitosa de un usuario existente
-    @Given("que soy un usuario con permisos de administrador autenticado")
-    public void que_soy_un_usuario_con_permisos_de_administrador_autenticado() {
-        username = "admin";
-        password = "admin";
-
-        // Enviar la solicitud de inicio de sesión
-        Response loginResponse = given()
-                .contentType("application/json")
-                .body("{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}")
-                .post("http://localhost:8080/api/authenticate");
-
-        // Obtener el token JWT de la respuesta
-        authToken = loginResponse.jsonPath().getString("id_token");
-        assertNotNull("Se esperaba un token JWT, pero no se recibió", authToken);
-    }
-
+    private String email= "ormoreno2000@gmail.com";
 
     @Given("proporciono los datos correctos para modificar el perfil de un usuario")
     public void proporciono_los_datos_correctos_para_modificar_el_perfil_de_un_usuario() {
-        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"new_user\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
+        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"user2\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
     }
-
 
     @When("envío una solicitud para modificar los datos")
     public void envío_una_solicitud_para_modificar_los_datos() {
+        authToken = AuthContextSingleton.getInstance().getToken();
         response = given()
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + authToken)
@@ -79,7 +61,7 @@ public class UpdateSteps {
         Response getResponse = given()
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + authToken)
-                .get(endpoint + "/" + "new_user");
+                .get(endpoint + "/" + "user2");
         // Depuración: imprimir el cuerpo de la respuesta
         System.out.println("Respuesta del usuario actualizado: " + getResponse.getBody().asString());
 
@@ -90,15 +72,15 @@ public class UpdateSteps {
         String nombreActualizado = getResponse.jsonPath().getString("login");
         String emailActualizado = getResponse.jsonPath().getString("email");
 
-        assertEquals("new_user", nombreActualizado);
-        assertEquals("otroemail@example", emailActualizado);
+        assertEquals("user2", nombreActualizado);
+        assertEquals("ormoreno2000@gmail.com", emailActualizado);
     }
 
     //Escenario 2 -- Actualizacion de un usuario con un email ya existente
     @Given("proporciono un email ya registrado en otro usuario")
     public void email_existente() {
         email = "admin@localhost";
-        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"new_user\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
+        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"user2\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
     }
 
     @Then("debería ver un mensaje de error en el servicios de actualizacion: {string}")
@@ -127,23 +109,5 @@ public class UpdateSteps {
         email = "ejemplo@localhost";
         nuevosDatos = "{\"id\": \"" + 3 + "\", \"login\": \"ejemplo\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
     }
-
-    //Escenario 5 -- Actualizacion de un usuario sin permisos de administrador
-    @Given("que soy un usuario no autenticado como administrador")
-    public void usuario_sin_permisos() {
-        username = "johnd";
-        password = "password123";
-
-        // Enviar la solicitud de inicio de sesión
-        Response loginResponse = given()
-                .contentType("application/json")
-                .body("{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}")
-                .post("http://localhost:8080/api/authenticate");
-
-        // Obtener el token JWT de la respuesta
-        authToken = loginResponse.jsonPath().getString("id_token");
-        assertNotNull("Se esperaba un token JWT, pero no se recibió", authToken);
-    }
-
 
 }

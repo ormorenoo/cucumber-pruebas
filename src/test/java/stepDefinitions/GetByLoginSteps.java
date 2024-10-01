@@ -1,6 +1,7 @@
 package stepDefinitions;
 
 
+import context.AuthContextSingleton;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -14,37 +15,23 @@ import static org.junit.Assert.assertNotNull;
 
 public class GetByLoginSteps {
 
-    private String adminToken;
+    private String sessionToken;
     private Response response;
     private String endpoint = "http://localhost:8080/api/admin/users/";
     private String loginUsuario;
 
     // Escenario 1 -- Usuario con rol ADMIN accede correctamente a los detalles de un usuario
 
-    @Given("que soy un administrador autenticado")
-    public void que_soy_un_usuario_con_permisos_de_administrador_autenticado() {
-
-        String username = "admin";
-        String password = "admin";
-
-        Response authResponse = given()
-                .contentType("application/json")
-                .body("{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}")
-                .post("http://localhost:8080/api/authenticate");
-
-        adminToken = authResponse.jsonPath().getString("id_token");
-        Assert.assertNotNull("Token JWT no debe ser nulo", adminToken);
-    }
-
     @Given("proporciono un login correcto de un usuario existente")
     public void proporciono_un_login_correcto_de_un_usuario_existente() {
-        loginUsuario = "new_user";
+        loginUsuario = "johnd";
     }
 
     @When("envio una solicitud para obtener el usuario")
     public void envio_una_solicitud_para_obtener_el_usuario() {
+        sessionToken = AuthContextSingleton.getInstance().getToken();
         response = given()
-                .header("Authorization", "Bearer " + adminToken)
+                .header("Authorization", "Bearer " + sessionToken)
                 .contentType("application/json")
                 .get(endpoint + loginUsuario);
         // Validación del JSON Schema
@@ -72,25 +59,8 @@ public class GetByLoginSteps {
         String login = response.jsonPath().getString("login");
         String email = response.jsonPath().getString("email");
 
-        assertEquals("new_user", login);
-        assertEquals("otroemail@example", email);
-    }
-
-    //Escenario 2 -- Usuario sin rol admin intenta acceder a los detalles de un usuario
-    @Given("que soy un usuario sin permisos de administrador autenticado")
-    public void usuario_no_administrador_autenticado() {
-        String username = "johnd";
-        String password = "password123";
-
-        // Enviar la solicitud de inicio de sesión
-        Response loginResponse = given()
-                .contentType("application/json")
-                .body("{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}")
-                .post("http://localhost:8080/api/authenticate");
-
-        // Obtener el token JWT de la respuesta
-        adminToken = loginResponse.jsonPath().getString("id_token");
-        assertNotNull("Se esperaba un token JWT, pero no se recibió", adminToken);
+        assertEquals("johnd", login);
+        assertEquals("john.d@example.com", email);
     }
 
     @Then("debería ver un mensaje de error en el servicio de obtener por id: {string}")

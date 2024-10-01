@@ -1,5 +1,6 @@
 package stepDefinitions;
 
+import context.AuthContextSingleton;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,35 +14,18 @@ import static org.junit.Assert.assertEquals;
 
 public class DeleteUserSteps {
     private Response response;
-    private String adminToken;
+    private String sessionToken;
     private String loginUsuario;
 
     private String usuarioSinPermisosToken;
 
     private String endpoint = "http://localhost:8080/api";
 
-    @Given("que soy un administrador autenticado")
-    public void soyAdministradorAutenticado() {
-        // Simulamos el login como administrador para obtener el token JWT
-        Map<String, String> adminCredentials = new HashMap<>();
-        adminCredentials.put("username", "admin");
-        adminCredentials.put("password", "admin");
-
-        // Autenticación para obtener el token de administrador
-        Response authResponse = given()
-                .contentType("application/json")
-                .body(adminCredentials)
-                .when()
-                .post("/api/authenticate");
-
-        // Extraemos el token de la respuesta
-        adminToken = authResponse.jsonPath().getString("id_token");
-    }
-
     @Given("existe un usuario con un login dado")
     public void existeUsuarioConLoginDado() {
         // Asignamos el login del usuario que será eliminado
         loginUsuario = "usuarioaeliminar";
+        sessionToken = AuthContextSingleton.getInstance().getToken();
 
         // Creamos un usuario para asegurarnos de que existe antes de eliminarlo
         Map<String, String> nuevoUsuario = new HashMap<>();
@@ -51,7 +35,7 @@ public class DeleteUserSteps {
 
         // Enviar solicitud para crear el usuario
         given()
-                .header("Authorization", "Bearer " + adminToken)
+                .header("Authorization", "Bearer " + sessionToken)
                 .contentType("application/json")
                 .body(nuevoUsuario)
                 .when()
@@ -64,29 +48,12 @@ public class DeleteUserSteps {
         loginUsuario = "usuarioNoExistente";
     }
 
-    @Given("que soy un usuario sin privilegios de administrador")
-    public void soyUsuarioSinPrivilegiosDeAdministrador() {
-        // Simulamos el login de un usuario sin permisos
-        Map<String, String> userCredentials = new HashMap<>();
-        userCredentials.put("username", "user");
-        userCredentials.put("password", "user");
-
-        // Autenticación para obtener el token de usuario sin permisos
-        Response authResponse = given()
-                .contentType("application/json")
-                .body(userCredentials)
-                .when()
-                .post(endpoint + "/authenticate");
-
-        // Extraemos el token de la respuesta
-        usuarioSinPermisosToken = authResponse.jsonPath().getString("id_token");
-    }
-
     @When("envío una solicitud para eliminar el usuario con login dado")
     public void envioSolicitudParaEliminarUsuarioConLoginDado() {
+        sessionToken = AuthContextSingleton.getInstance().getToken();
         // Enviar la solicitud DELETE para eliminar el usuario
         response = given()
-                .header("Authorization", "Bearer " + adminToken)  // Token de administrador
+                .header("Authorization", "Bearer " + sessionToken)  // Token de administrador
                 .when()
                 .delete(endpoint + "/admin/users/" + loginUsuario);
     }
@@ -125,7 +92,7 @@ public class DeleteUserSteps {
     public void elUsuarioNoDebeExistir() {
         // Intentamos buscar el usuario eliminado
         given()
-                .header("Authorization", "Bearer " + adminToken)
+                .header("Authorization", "Bearer " + sessionToken)
                 .when()
                 .get(endpoint + "/admin/users/" + loginUsuario)
                 .then()
