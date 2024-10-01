@@ -1,9 +1,11 @@
 package stepDefinitions;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,12 @@ public class CreateUserSteps {
     private Map<String, String> usuario;
     private Response response;
     private String endpoint = "http://localhost:8080/api/register";
+    private Faker faker;
+
+    @BeforeEach
+    public void setUp() {
+        faker = new Faker();
+    }
 
     @Given("que soy un usuario sin registrar")
     public void soy_un_usuario_sin_registrar() {
@@ -23,11 +31,11 @@ public class CreateUserSteps {
 
     @Given("proporciono todos los datos solicitados para el registro")
     public void proporciono_datos_dolicitados_para_registro() {
-        usuario.put("login", "johnd");
-        usuario.put("email", "John.D@example.com");
-        usuario.put("firstName", "John");
-        usuario.put("lastName", "Doe");
-        usuario.put("password", "password123");
+        usuario.put("login", faker.name().username());
+        usuario.put("email", faker.internet().emailAddress());
+        usuario.put("firstName", faker.name().firstName());
+        usuario.put("lastName", faker.name().lastName());
+        usuario.put("password", faker.internet().password());
     }
 
     @Given("Tengo un email ya registrado")

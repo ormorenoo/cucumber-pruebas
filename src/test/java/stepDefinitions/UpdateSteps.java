@@ -1,10 +1,12 @@
 package stepDefinitions;
 
+import com.github.javafaker.Faker;
 import context.AuthContextSingleton;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeEach;
 
 
 import static io.restassured.RestAssured.given;
