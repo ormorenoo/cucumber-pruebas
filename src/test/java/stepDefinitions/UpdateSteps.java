@@ -24,11 +24,15 @@ public class UpdateSteps {
     private String nuevosDatos;
     private String username;
     private String password;
-    private String email= "ormoreno2000@gmail.com";
+    private String email;
+    private Faker faker;
 
     @Given("proporciono los datos correctos para modificar el perfil de un usuario")
     public void proporciono_los_datos_correctos_para_modificar_el_perfil_de_un_usuario() {
-        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"user2\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
+        faker = new Faker();
+        username = faker.name().username();
+        email = faker.internet().emailAddress();
+        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \""+ username + "\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
     }
 
     @When("envío una solicitud para modificar los datos")
@@ -63,7 +67,7 @@ public class UpdateSteps {
         Response getResponse = given()
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + authToken)
-                .get(endpoint + "/" + "user2");
+                .get(endpoint + "/" + username);
         // Depuración: imprimir el cuerpo de la respuesta
         System.out.println("Respuesta del usuario actualizado: " + getResponse.getBody().asString());
 
@@ -74,15 +78,14 @@ public class UpdateSteps {
         String nombreActualizado = getResponse.jsonPath().getString("login");
         String emailActualizado = getResponse.jsonPath().getString("email");
 
-        assertEquals("user2", nombreActualizado);
+        assertEquals(username, nombreActualizado);
         assertEquals("ormoreno2000@gmail.com", emailActualizado);
     }
 
     //Escenario 2 -- Actualizacion de un usuario con un email ya existente
     @Given("proporciono un email ya registrado en otro usuario")
     public void email_existente() {
-        email = "admin@localhost";
-        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"user2\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
+        nuevosDatos = "{\"id\": \"" + usuarioId + "\", \"login\": \"user2\", \"email\": \"" + "admin@localhost" + "\", \"authorities\": [\"ROLE_USER\"]}";
     }
 
     @Then("debería ver un mensaje de error en el servicios de actualizacion: {string}")
@@ -108,8 +111,7 @@ public class UpdateSteps {
     //Escenario 4 -- Actualizacion de un usuario no existente
     @Given("proporciono los datos para actualizar un usuario ya eliminado")
     public void usuario_inexistente() {
-        email = "ejemplo@localhost";
-        nuevosDatos = "{\"id\": \"" + 3 + "\", \"login\": \"ejemplo\", \"email\": \"" + email + "\", \"authorities\": [\"ROLE_USER\"]}";
+        nuevosDatos = "{\"id\": \"" + 3 + "\", \"login\": \"ejemplo\", \"email\": \"" + "ejemplo@localhost" + "\", \"authorities\": [\"ROLE_USER\"]}";
     }
 
 }

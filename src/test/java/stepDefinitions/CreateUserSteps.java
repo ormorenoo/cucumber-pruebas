@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.Assert.assertEquals;
 
 public class CreateUserSteps {
@@ -19,11 +20,6 @@ public class CreateUserSteps {
     private String endpoint = "http://localhost:8080/api/register";
     private Faker faker;
 
-    @BeforeEach
-    public void setUp() {
-        faker = new Faker();
-    }
-
     @Given("que soy un usuario sin registrar")
     public void soy_un_usuario_sin_registrar() {
         usuario = new HashMap<>();
@@ -31,6 +27,7 @@ public class CreateUserSteps {
 
     @Given("proporciono todos los datos solicitados para el registro")
     public void proporciono_datos_dolicitados_para_registro() {
+        faker = new Faker();
         usuario.put("login", faker.name().username());
         usuario.put("email", faker.internet().emailAddress());
         usuario.put("firstName", faker.name().firstName());

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.Assert.assertEquals;
 
 public class GetAllSteps {
@@ -54,6 +55,9 @@ public class GetAllSteps {
                 .queryParams(ordenacion)
                 .when()
                 .get("/api/users");
+        // Validación del JSON Schema
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schemas/get_all_schema.json"));
+
     }
 
     @Then("la respuesta de listar debe ser: {string}")
