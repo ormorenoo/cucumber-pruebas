@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                // Checkout the code using the stored credentials
+                git credentialsId: 'taller3', url: 'https://github.com/ormorenoo/cucumber-pruebas.git', branch: 'main'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Command to run your tests, for example:
+                sh './gradlew test'
+            }
+        }
+    }
+}
