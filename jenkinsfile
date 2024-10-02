@@ -12,7 +12,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 // Command to run your tests, for example:
-                sh './gradlew test'
+                sh 'mvn test'
             }
         }
     }
