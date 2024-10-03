@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.8.4-jdk-11' // Imagen Docker con Maven y JDK 11 preinstalado
-            args '-v /var/jenkins_home/.m2:/root/.m2' // Montar el repositorio Maven local
+            image 'maven:3.8.4-jdk-11'   // Imagen Maven con JDK 11
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock' // Conectar Docker al host
         }
     }
 
