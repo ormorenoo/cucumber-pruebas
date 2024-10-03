@@ -1,17 +1,20 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.8.4-jdk-11' // Imagen Docker con Maven y JDK 11 preinstalado
+            args '-v /var/jenkins_home/.m2:/root/.m2' // Montar el repositorio Maven local
+        }
+    }
 
     stages {
         stage('Clone repository') {
             steps {
-                // Checkout the code using the stored credentials
                 git credentialsId: 'taller3.2', url: 'https://github.com/ormorenoo/cucumber-pruebas.git', branch: 'master'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Command to run your tests, for example:
                 sh 'mvn test'
             }
         }

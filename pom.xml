@@ -103,4 +103,17 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version> <!-- Versión del plugin -->
+        <configuration>
+          <source>${java.version}</source> <!-- Usar la versión definida en las propiedades -->
+          <target>${java.version}</target> <!-- Usar la versión definida en las propiedades -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
