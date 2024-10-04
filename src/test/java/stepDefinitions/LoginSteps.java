@@ -23,7 +23,7 @@ public class LoginSteps {
     // Escenario 1 -- Inicio de sesión exitoso
 
     @Given("ingreso un nombre de usuario y contraseña")
-    public void ingreso_un_nombre_de_usuario_y_contraseña() {
+    public void ingreso_un_nombre_de_usuario_y_contrasenia() {
         username = "johnd";
         password = "password123";
     }

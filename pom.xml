@@ -10,6 +10,7 @@
   <properties>
     <java.version>11</java.version> <!-- Versión de Java -->
     <spring-boot.version>2.5.4</spring-boot.version> <!-- Versión de Spring Boot -->
+    <maven.test.skip>false</maven.test.skip>
   </properties>
   <dependencies>
       <dependency>
@@ -63,30 +64,18 @@
       <version>2.13.0</version>
     </dependency>
 
-    <!-- JUnit 5 -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.0</version>
-      <scope>test</scope>
-    </dependency>
     <!-- Dependencia de Cucumber para Java -->
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>7.6.0</version>
+      <version>6.10.4</version>
       <scope>test</scope>
     </dependency>
     <!-- Dependencia de Cucumber JUnit -->
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit</artifactId>
-      <version>7.6.0</version>
+      <version>6.10.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -96,12 +85,15 @@
       <scope>test</scope>
     </dependency>
     <!-- Dependencia de JUnit -->
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
+
+
   </dependencies>
   <build>
     <plugins>
@@ -113,6 +105,12 @@
           <source>${java.version}</source> <!-- Usar la versión definida en las propiedades -->
           <target>${java.version}</target> <!-- Usar la versión definida en las propiedades -->
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+
       </plugin>
     </plugins>
   </build>
