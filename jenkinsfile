@@ -1,21 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.4-jdk-11'   // Imagen Maven con JDK 11
-            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock' // Conectar Docker al host
-        }
-    }
+    agent { label 'master'}
 
     stages {
-        stage('Clone repository') {
+        stage('test') {
             steps {
-                git credentialsId: 'taller3.2', url: 'https://github.com/ormorenoo/cucumber-pruebas.git', branch: 'master'
+                sh 'mvn clean compile test'
             }
         }
 
-        stage('Run Tests') {
+        stage('build application') {
             steps {
-                sh 'mvn clean install'
+                sh 'mvn clean install -Dmaven.test.skip=true'
             }
         }
     }
